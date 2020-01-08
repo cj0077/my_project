@@ -8,18 +8,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unque_key=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-
-
 class Demo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), primary_key=True, nullable=False)
-    email = db.Column(db.String(120), unique_key=True, nullable=False)
-    mobile = db.Column(db.String(10), unique_key=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    mobile = db.Column(db.String(10), unique=True, nullable=False)
     city = db.Column(db.String(120), nullable=False)
+
+    def __repr__(self):
+        return f"Post('{self.name}', '{self.email}', '{self.mobile}', '{self.city}')"
+
+
+class User(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('demo.id'), nullable=False)
+    username = db.Column(db.String(20), primary_key=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.username}')"
 
 
 posts = [
